@@ -19,7 +19,7 @@ export default class CustomerService implements CustomerInterface {
         }
     }
 
-    private collection = firebase.firestore().collection('customer').withConverter(this.converter);
+    private collection = firebase.firestore().collection('customers').withConverter(this.converter);
 
     constructor() { }
 

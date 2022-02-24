@@ -11,6 +11,15 @@ export function CustomerProvider({ children }: ContextProviderInterface) {
     
     const customerService = new CustomerService();
 
+    const value = {
+        searchCustomer,
+        setSearchCustomer,
+        filterSearchCustomers,
+        getAllCustomers,
+        saveCustomer,
+        deleteCustomer
+    };
+
     function filterSearchCustomers(customersData: Customer[]): Customer[] {
         if (!customersData) return [];
         if (!searchCustomer) return customersData;
@@ -35,7 +44,7 @@ export function CustomerProvider({ children }: ContextProviderInterface) {
     function sortCustomers(customers: Customer[]): Customer[] {
         return customers.sort(function (a, b) {
             return a.name.localeCompare(b.name);
-          });
+        });
     }
 
     async function getAllCustomers(): Promise<Customer[]> {
@@ -51,15 +60,6 @@ export function CustomerProvider({ children }: ContextProviderInterface) {
     async function deleteCustomer(customer: Customer): Promise<void> {
         await customerService.delete(customer);
     }
-
-    const value = {
-        searchCustomer,
-        setSearchCustomer,
-        filterSearchCustomers,
-        getAllCustomers,
-        saveCustomer,
-        deleteCustomer
-    };
 
     return (
         <CustomerContext.Provider value={ value }>

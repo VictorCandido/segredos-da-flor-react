@@ -1,5 +1,4 @@
 import { Button, FormControl, FormLabel, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Textarea } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
 import CustomerRegisterModalInterface from "../interfaces/CustomerRegisterModalInterface";
 
 export default function CustomerRegisterModal(props: CustomerRegisterModalInterface) {

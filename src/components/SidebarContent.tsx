@@ -31,8 +31,8 @@ const SidebarContent = ({ onClose, openSidebar, mainMenu, ...rest }: SidebarInte
             {...rest}
         >
             <Flex alignItems="center" mx={ openSidebar ? "8" : "0" } justifyContent="space-between">
-                {/* <Image src='/img/logo2.jpg' alt='Segredos da Flor' transition="0.4s ease" h={ openSidebar ? "10rem" : "5rem" }/> */}
-                <Image src='/img/fluig.jpeg' alt='Segredos da Flor' transition="0.4s ease" h={ openSidebar ? "10rem" : "5rem" }/>
+                <Image src='/img/logo2.jpg' alt='Segredos da Flor' transition="0.4s ease" h={ openSidebar ? "10rem" : "5rem" }/>
+                {/* <Image src='/img/fluig.jpeg' alt='Segredos da Flor' transition="0.4s ease" h={ openSidebar ? "10rem" : "5rem" }/> */}
                 <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
             </Flex>
             {LinkItems.map((link) => (

@@ -3,6 +3,7 @@ import type { AppProps } from 'next/app'
 import { ChakraProvider, extendTheme, ThemeConfig } from '@chakra-ui/react'
 import { NavigateProvider } from '../contexts/NavigateContext';
 import { CustomerProvider } from '../contexts/CustomerContext';
+import { ProductProvider } from '../contexts/ProductContext';
 
 const config: ThemeConfig = {
   initialColorMode: 'light',
@@ -15,9 +16,11 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <NavigateProvider>
       <CustomerProvider>
-        <ChakraProvider theme={ theme }>
-          <Component {...pageProps} />
-        </ChakraProvider>
+        <ProductProvider>
+          <ChakraProvider theme={ theme }>
+            <Component {...pageProps} />
+          </ChakraProvider>
+        </ProductProvider>
       </CustomerProvider>
     </NavigateProvider>
   )
