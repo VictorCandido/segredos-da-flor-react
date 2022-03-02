@@ -165,7 +165,7 @@ const Produtos: NextPage = () => {
         </InputGroup>
       </Box>
 
-      <Box borderWidth="1px" borderRadius='lg' p="10px" overflow='auto' bg={ useColorModeValue('white', 'gray.900') }>
+      <Box borderWidth="1px" borderRadius='lg' shadow='md' p="10px" overflow='auto' bg={ useColorModeValue('white', 'gray.900') }>
         <Table variant='striped' colorScheme="blackAlpha">
           <Thead>
             <Tr>

@@ -4,6 +4,7 @@ import { ChakraProvider, extendTheme, ThemeConfig } from '@chakra-ui/react'
 import { NavigateProvider } from '../contexts/NavigateContext';
 import { CustomerProvider } from '../contexts/CustomerContext';
 import { ProductProvider } from '../contexts/ProductContext';
+import { SellProvider } from '../contexts/SellContext';
 
 const config: ThemeConfig = {
   initialColorMode: 'light',
@@ -16,11 +17,13 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <NavigateProvider>
       <CustomerProvider>
-        <ProductProvider>
-          <ChakraProvider theme={ theme }>
-            <Component {...pageProps} />
-          </ChakraProvider>
-        </ProductProvider>
+        <SellProvider>
+          <ProductProvider>
+            <ChakraProvider theme={ theme }>
+              <Component {...pageProps} />
+            </ChakraProvider>
+          </ProductProvider>
+        </SellProvider>
       </CustomerProvider>
     </NavigateProvider>
   )
