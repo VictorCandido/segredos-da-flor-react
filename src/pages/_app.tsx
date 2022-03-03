@@ -5,6 +5,7 @@ import { NavigateProvider } from '../contexts/NavigateContext';
 import { CustomerProvider } from '../contexts/CustomerContext';
 import { ProductProvider } from '../contexts/ProductContext';
 import { SellProvider } from '../contexts/SellContext';
+import { UtilsProvider } from '../contexts/UtilsContext';
 
 const config: ThemeConfig = {
   initialColorMode: 'light',
@@ -15,17 +16,19 @@ const theme = extendTheme({ config });
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <NavigateProvider>
-      <CustomerProvider>
-        <SellProvider>
-          <ProductProvider>
-            <ChakraProvider theme={ theme }>
-              <Component {...pageProps} />
-            </ChakraProvider>
-          </ProductProvider>
-        </SellProvider>
-      </CustomerProvider>
-    </NavigateProvider>
+    <UtilsProvider>
+      <NavigateProvider>
+        <CustomerProvider>
+          <SellProvider>
+            <ProductProvider>
+              <ChakraProvider theme={ theme }>
+                <Component {...pageProps} />
+              </ChakraProvider>
+            </ProductProvider>
+          </SellProvider>
+        </CustomerProvider>
+      </NavigateProvider>
+    </UtilsProvider>
   )
 }
 

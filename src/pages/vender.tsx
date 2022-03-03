@@ -1,22 +1,32 @@
 import type { NextPage } from 'next'
 import { useContext, useEffect, useState } from 'react';
-import { Box, Button, FormControl, FormLabel, Heading, HStack, Input, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Table, Tbody, Td, Tfoot, Th, Thead, Tr } from '@chakra-ui/react';
+import { Box, Button, FormControl, FormLabel, Heading, HStack, IconButton, Input, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Table, Tbody, Td, Tfoot, Th, Thead, Tr } from '@chakra-ui/react';
 import Select from 'react-select'
 import CurrencyInput from 'react-currency-input';
+import { FiTrash2 } from 'react-icons/fi';
 
 import MenuSidebar from '../components/MenuSidebar'
+
 import { NavigateContext } from '../contexts/NavigateContext';
-import CartItem from '../classes/CartItem';
 import { SellContext } from '../contexts/SellContext';
+
+import CartItem from '../classes/CartItem';
+import Cart from '../classes/Cart';
 import ProductAsOption from '../classes/ProductAsOption';
+import Product from '../classes/Product';
+import { UtilsContext } from '../contexts/UtilsContext';
 
 const Vender: NextPage = () => {
-  const [ cartItem, setCartItem ] = useState<CartItem>();
-  const [ selectedProduct, setSelectedProduct ] = useState<ProductAsOption>();
-  const [ productOptions, setProductOptions ] = useState<ProductAsOption[]>();
+  const [ cartItem, setCartItem ] = useState<CartItem>(new CartItem(new Product(), 0, 0));
+  const [ cart, setCart ] = useState<Cart>(new Cart([], 0));
+  const [ selectedProduct, setSelectedProduct ] = useState<ProductAsOption>(new ProductAsOption(new Product(), '', ''));
+  const [ productOptions, setProductOptions ] = useState<ProductAsOption[]>([]);
+  
+  const [ teste, setTeste ] = useState('');
 
   const { setSelectedPage } = useContext(NavigateContext);
   const { getAllProducts } = useContext(SellContext);
+  const { handleWithShowCurrencyValue } = useContext(UtilsContext);
 
   useEffect(() => {
     handleWithListProducts();
@@ -30,21 +40,24 @@ const Vender: NextPage = () => {
    * Update the Selected cartItem state through CartItem Modal.
    * @param event Changed field`s event
    */
-   function handleWithFormUpdate(fieldName: string, fieldValue: ProductAsOption | number): void {
-    const totalValue = (cartItem?.product.saleValue || 0) * (cartItem?.quantid || 0);
+  function handleWithFormUpdate(fieldName: string, fieldValue: ProductAsOption | number): void {
+    const totalValue = (cartItem.product.saleValue || 0) * (cartItem.quantid || 0);
     
     const fieldsEvents: any = {
       'product': () => {
         const productOption = fieldValue as ProductAsOption;
 
         setSelectedProduct(productOption);
-        setCartItem(new CartItem(cartItem?.id, productOption?.product, cartItem?.quantid, totalValue));
+        setCartItem(new CartItem(productOption?.product || new Product(), cartItem.quantid, totalValue));
       },
-      'quantid': () => setCartItem(new CartItem(cartItem?.id, cartItem?.product, Number(fieldValue), totalValue))
+      'quantid': () => setCartItem(new CartItem(cartItem.product, Number(fieldValue), totalValue))
     };
     fieldsEvents[fieldName]();
   }
 
+  /**
+   * Get all products from database and fill the product select in the form
+   */
   async function handleWithListProducts(): Promise<void> {
     const products = await getAllProducts();
     const productOptions = products.map(product => {
@@ -52,6 +65,62 @@ const Vender: NextPage = () => {
     });
 
     setProductOptions(productOptions);
+  }
+
+  /**
+   * Returns the last id of the cart items
+   * @returns the id number of the last cart item
+   */
+  function getLastCartItemsId(): number {
+    const { items } = cart;
+
+    console.log('items before', items)
+    console.log('items.length', items.length)
+
+    if (items.length > 0) {
+      return items[items.length - 1].id;
+    }
+
+    return 0;
+  }
+
+  function calcCartTotalValue(): number {
+    const { items } = cart;
+    let totalValue = 0;
+
+    items.forEach(item => totalValue += item.totalValue);
+
+    return totalValue;
+  }
+
+  /**
+   * Add the selected product to the cart items list and clear the selected product
+   */
+  function handleWithAddNewItemToCart(): void {
+    // 1 - Calc the item id and add to the cart item that will be stored in cart items list
+    const newCartItemId = getLastCartItemsId() + 1; 
+    const newCartItem = new CartItem(cartItem.product, cartItem.quantid, cartItem.totalValue, newCartItemId);
+    // setCartItem(newCartItem);
+
+    // 2 - Calc the total value of the cart
+    const totalValue = calcCartTotalValue() + newCartItem.totalValue;
+
+    // 3 - Add the item to cart
+    const newCart = new Cart([ ...cart.items, newCartItem ], totalValue);
+    setCart(newCart);
+
+    // 4 - Reset the cart item
+    setCartItem(new CartItem(new Product(), 0, 0));
+    setSelectedProduct(new ProductAsOption(new Product(), '', ''));
+  }
+
+  function handleWithRemoveItemFromCart(cartItem: CartItem): void {
+    const totalValueOfItemToBeRemoved = cart.items.find(item => item.id === cartItem.id)?.totalValue;
+    const newCartItems = cart.items.filter(item => item.id !== cartItem.id);
+
+    const newTotalValue = calcCartTotalValue() - (totalValueOfItemToBeRemoved || 0);
+
+    setCart(new Cart(newCartItems, newTotalValue));
   }
   
   return (
@@ -78,7 +147,7 @@ const Vender: NextPage = () => {
               <NumberInput 
                 min={0} 
                 onChange={ (vs: string, valueAsNumber: number) => handleWithFormUpdate('quantid', valueAsNumber) }
-                value={ cartItem?.quantid }
+                value={ cartItem.quantid }
               >
                 <NumberInputField />
                 <NumberInputStepper>
@@ -100,7 +169,7 @@ const Vender: NextPage = () => {
                 prefix="R$"
                 readOnly 
                 placeholder='Valor Unitário' 
-                value={ cartItem?.product.saleValue } 
+                value={ cartItem.product.saleValue } 
               />
           </FormControl>
 
@@ -114,7 +183,7 @@ const Vender: NextPage = () => {
                 prefix="R$"
                 readOnly 
                 placeholder='Valor Total' 
-                value={ ((cartItem?.product.saleValue || 0) * (cartItem?.quantid || 0)) }
+                value={ ((cartItem.product.saleValue || 0) * (cartItem.quantid || 0)) }
                 onChange={ event => console.log(event) }
               />
           </FormControl>
@@ -126,8 +195,11 @@ const Vender: NextPage = () => {
             w="100%" 
             colorScheme='twitter' 
             size="lg"
-            onClick={ () => console.log(cartItem) }
-          >Adicionar ao Carrinho</Button>
+            isDisabled={ !cartItem.product || !cartItem.quantid }
+            onClick={ handleWithAddNewItemToCart }
+          >
+            Adicionar ao Carrinho
+          </Button>
         </HStack>
       </Box>
 
@@ -135,7 +207,7 @@ const Vender: NextPage = () => {
         <Heading size="lg">Carrinho</Heading>
 
         <Box mt="10px">
-          <Table variant='striped'>
+          <Table variant='striped' size="sm">
             <Thead>
               <Tr background="#f8f9fa">
                 <Th w="25%">Código</Th>
@@ -147,14 +219,29 @@ const Vender: NextPage = () => {
               </Tr>
             </Thead>
             <Tbody>
-              <Tr>
-                <Td>inches</Td>
-                <Td>millimetres (mm)</Td>
-                <Td isNumeric>25.4</Td>
-                <Td isNumeric>25.4</Td>
-                <Td isNumeric>25.4</Td>
-                <Td isNumeric>25.4</Td>
-              </Tr>
+              { cart.items.map(item => {
+                return (
+                  <Tr key={ item.id }>
+                    <Td>{ item.product.code }</Td>
+                    <Td>{ item.product.name }</Td>
+                    <Td isNumeric>{ item.quantid }</Td>
+                    <Td isNumeric>{ handleWithShowCurrencyValue(item.product.saleValue) }</Td>
+                    <Td isNumeric>{ handleWithShowCurrencyValue(item.totalValue) }</Td>
+                    <Td isNumeric d="flex" justifyContent="space-around">
+                      <IconButton
+                        aria-label='Editar'
+                        icon={ <FiTrash2 /> }
+                        colorScheme="red"
+                        variant="ghost"
+                        isRound
+                        onClick={ () => handleWithRemoveItemFromCart(item) }
+                      />
+                    </Td>
+                  </Tr>
+                )
+              }) }
+
+              
             </Tbody>
             <Tfoot>
               <Tr background="#f8f9fa">
@@ -162,7 +249,7 @@ const Vender: NextPage = () => {
                 <Th></Th>
                 <Th></Th>
                 <Th></Th>
-                <Th isNumeric>R$10,00</Th>
+                <Th isNumeric fontSize={15}>{ handleWithShowCurrencyValue(cart.totalValue) }</Th>
                 <Th></Th>
               </Tr>
             </Tfoot>

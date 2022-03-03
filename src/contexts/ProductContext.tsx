@@ -1,13 +1,15 @@
-import { createContext, useState } from "react";
-import CurrencyInput from 'react-currency-input';
+import { createContext, useContext, useState } from "react";
 import Product from "../classes/Product";
 import ContextProviderInterface from "../interfaces/ContextProviderInterface";
 import ProductContextInterface from "../interfaces/ProductContextInterface";
 import ProductService from "../services/ProductService";
+import { UtilsContext } from "./UtilsContext";
 
 export const ProductContext = createContext({} as ProductContextInterface);
 
 export function ProductProvider({ children }: ContextProviderInterface) {
+    const { handleWithShowCurrencyValue } = useContext(UtilsContext);
+
     const productService = new ProductService();
 
     const [ searchProduct, setSearchProduct ] = useState('');
@@ -19,8 +21,7 @@ export function ProductProvider({ children }: ContextProviderInterface) {
         getAllProducts,
         saveProduct,
         deleteProduct,
-        handleWithCurrencyValue,
-        handleWithShowCurrencyValue
+        handleWithCurrencyValue    
     };
 
     /**
@@ -33,33 +34,6 @@ export function ProductProvider({ children }: ContextProviderInterface) {
       value = value.replaceAll('.', '');
       value = value.replaceAll(',', '.');
       return Number(value)
-    }
-  
-    /**
-     * Transforms a number value to a string value with mask
-     * @param value number value withou mask
-     * @returns string value with mask
-     */
-    function handleWithShowCurrencyValue(value: number): string {
-      let valueString = '';
-      
-      if (String(value).split('.').length > 1) {
-        let valueStringArray = String(value).split('.');
-        valueStringArray[1] = valueStringArray[1]?.padEnd(2, '0');
-        
-        valueString = valueStringArray.join('.');
-      } else {
-        valueString = String(value);
-      }
-  
-      const props = {
-        value: valueString, 
-        decimalSeparator: ',',
-        thousandSeparator: '.',
-        prefix: 'R$'
-      }
-  
-      return CurrencyInput.prototype.prepareProps(props).maskedValue
     }
 
     function filterSearchProducts(productsData: Product[]): Product[] {

@@ -6,11 +6,11 @@ export default class CartItem {
     #Quantid: number;
     #TotalValue: number;
 
-    constructor(id?: number, product?: Product, quantid?: number, totalValue?: number) {
+    constructor(product: Product, quantid: number, totalValue: number, id?: number) {
         this.#Id = id || 0;
-        this.#Product = product || new Product();
-        this.#Quantid = quantid || 0;
-        this.#TotalValue = totalValue || 0;
+        this.#Product = product;
+        this.#Quantid = quantid;
+        this.#TotalValue = totalValue;
     }
 
     get id(): number {
@@ -39,5 +39,15 @@ export default class CartItem {
     }
     set totalValue(totalValue: number) {
         this.#TotalValue = totalValue;
+    }
+
+    isValid(): boolean {
+      if (
+        this.product
+        && this.quantid
+        && this.totalValue
+      ) return true;
+  
+      return false;
     }
 }

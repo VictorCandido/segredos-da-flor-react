@@ -8,5 +8,4 @@ export default interface ProductContextInterface {
     saveProduct: (product: Product) => Promise<Product | undefined>;
     deleteProduct: (product: Product) => Promise<void>;
     handleWithCurrencyValue: (value: string) => number;
-    handleWithShowCurrencyValue: (value: number) => string;
 }

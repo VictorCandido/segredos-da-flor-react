@@ -8,6 +8,7 @@ import MenuSidebar from '../components/MenuSidebar'
 import ProductRegisterModal from '../components/ProductRegisterModal';
 import { NavigateContext } from '../contexts/NavigateContext';
 import { ProductContext } from '../contexts/ProductContext';
+import { UtilsContext } from '../contexts/UtilsContext';
 
 const Produtos: NextPage = () => {
   const { isOpen: productModalIsOpen, onOpen: productModalOpenModal, onClose: productModalCloseModal } = useDisclosure();
@@ -17,7 +18,8 @@ const Produtos: NextPage = () => {
   const [ product, setProduct ] = useState<Product>(new Product());
   
   const { setSelectedPage } = useContext(NavigateContext);
-  const { searchProduct, setSearchProduct, filterSearchProducts, saveProduct, getAllProducts, deleteProduct, handleWithCurrencyValue, handleWithShowCurrencyValue } = useContext(ProductContext);
+  const { searchProduct, setSearchProduct, filterSearchProducts, saveProduct, getAllProducts, deleteProduct, handleWithCurrencyValue } = useContext(ProductContext);
+  const { handleWithShowCurrencyValue } = useContext(UtilsContext);
 
   const toast = useToast();
   
