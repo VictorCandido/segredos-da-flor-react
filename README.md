@@ -60,7 +60,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
     - [x] Calculate cart total value
     - [x] Currency mask
     - [x] Remove item from cart items list
-    - [ ] Verify problem with wrong filter product's field
+    - [x] Verify problem with wrong filter product's field
     - [ ] Finish sale
         - [ ] Create modal to show values
         - [ ] Calculate discount (percent and value)

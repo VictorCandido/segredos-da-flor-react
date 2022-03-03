@@ -15,6 +15,7 @@ import Cart from '../classes/Cart';
 import ProductAsOption from '../classes/ProductAsOption';
 import Product from '../classes/Product';
 import { UtilsContext } from '../contexts/UtilsContext';
+import FinishSaleModal from '../components/FinishSaleModal';
 
 const Vender: NextPage = () => {
   const [ cartItem, setCartItem ] = useState<CartItem>(new CartItem(new Product(), 0, 0));
@@ -22,8 +23,6 @@ const Vender: NextPage = () => {
   const [ selectedProduct, setSelectedProduct ] = useState<ProductAsOption>(new ProductAsOption(new Product(), '', ''));
   const [ productOptions, setProductOptions ] = useState<ProductAsOption[]>([]);
   
-  const [ teste, setTeste ] = useState('');
-
   const { setSelectedPage } = useContext(NavigateContext);
   const { getAllProducts } = useContext(SellContext);
   const { handleWithShowCurrencyValue } = useContext(UtilsContext);
@@ -84,6 +83,10 @@ const Vender: NextPage = () => {
     return 0;
   }
 
+  /**
+   * Calculate the total value of the cart
+   * @returns total value of the cart
+   */
   function calcCartTotalValue(): number {
     const { items } = cart;
     let totalValue = 0;
@@ -114,6 +117,10 @@ const Vender: NextPage = () => {
     setSelectedProduct(new ProductAsOption(new Product(), '', ''));
   }
 
+  /**
+   * Removes a item of the cart
+   * @param cartItem cart item to be removed
+   */
   function handleWithRemoveItemFromCart(cartItem: CartItem): void {
     const totalValueOfItemToBeRemoved = cart.items.find(item => item.id === cartItem.id)?.totalValue;
     const newCartItems = cart.items.filter(item => item.id !== cartItem.id);
@@ -121,6 +128,26 @@ const Vender: NextPage = () => {
     const newTotalValue = calcCartTotalValue() - (totalValueOfItemToBeRemoved || 0);
 
     setCart(new Cart(newCartItems, newTotalValue));
+  }
+
+  /**
+   * Custom function to filter only the label from options
+   * @param candidate options from select
+   * @param input filter value
+   * @returns if shoud show the option or not
+   */
+  function customProductsFilterOption(candidate: any, input: string): boolean {
+    if (input) {
+      return candidate.label.toLowerCase().includes(input.toLowerCase());
+    }
+    return true
+  }
+
+  /**
+   * Clear the cart items list and the total value
+   */
+  function handleWithCancelSale(): void {
+    setCart(new Cart([], 0));
   }
   
   return (
@@ -137,6 +164,7 @@ const Vender: NextPage = () => {
                 isClearable 
                 options={productOptions}
                 value={ selectedProduct }
+                filterOption={ customProductsFilterOption  }
                 onChange={ productOption => handleWithFormUpdate('product', productOption as ProductAsOption) }
               />
           </FormControl>
@@ -255,7 +283,36 @@ const Vender: NextPage = () => {
             </Tfoot>
           </Table>
         </Box>
+        
+        {/* ADD TO CART BUTTON */}
+        <HStack spacing={6} mt={4}>
+          <Button 
+            w="100%" 
+            colorScheme='green' 
+            size="lg"
+            isDisabled={ !cart.items.length }
+            onClick={ handleWithAddNewItemToCart }
+          >
+            Finalizar Venda
+          </Button>
+
+          <Button 
+            w="100%" 
+            colorScheme='red' 
+            size="lg"
+            isDisabled={ !cart.items.length }
+            onClick={ handleWithCancelSale }
+          >
+            Cancelar Venda
+          </Button>
+        </HStack>
       </Box>
+
+      <FinishSaleModal 
+        isOpen={ true }
+        onClose={ () => console.log('fechou') }
+      />
+      
     </MenuSidebar>
   )
 }
