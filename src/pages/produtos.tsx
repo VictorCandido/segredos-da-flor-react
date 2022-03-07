@@ -18,8 +18,8 @@ const Produtos: NextPage = () => {
   const [ product, setProduct ] = useState<Product>(new Product());
   
   const { setSelectedPage } = useContext(NavigateContext);
-  const { searchProduct, setSearchProduct, filterSearchProducts, saveProduct, getAllProducts, deleteProduct, handleWithCurrencyValue } = useContext(ProductContext);
-  const { handleWithShowCurrencyValue } = useContext(UtilsContext);
+  const { searchProduct, setSearchProduct, filterSearchProducts, saveProduct, getAllProducts, deleteProduct } = useContext(ProductContext);
+  const { handleWithCurrencyValue, handleWithShowCurrencyValue } = useContext(UtilsContext);
 
   const toast = useToast();
   
