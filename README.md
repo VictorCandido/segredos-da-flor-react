@@ -1,4 +1,4 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+This is the Segredos da Flor projetc developed with React.js using Vercel's [Next.js](https://nextjs.org/).
 
 ## Getting Started
 
@@ -32,3 +32,41 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+
+## Features
+
+- [ ] Customers Screen
+     - [x] List customers
+     - [x] Add new customer
+     - [x] Edit existing customer
+     - [x] Delete customer
+     - [x] Filter customers
+     - [x] Phone mask
+     - [ ] Sort list by table header
+- [ ] Products Screen
+     - [x] List products
+     - [x] Add new product
+     - [x] Edit existing product
+     - [x] Delete product
+     - [x] Filter products
+     - [x] Currency mask
+     - [x] Is product showing mask (Sim, Não)
+     - [ ] Sort list by table header
+- [ ] Sell Screen
+    - [x] Create cart item
+    - [x] Create cart items list
+    - [x] Add new item to cart items list
+    - [x] Calculate cart total value
+    - [x] Currency mask
+    - [x] Remove item from cart items list
+    - [x] Verify problem with wrong filter product's field
+    - [ ] Finish sale
+        - [ ] Create modal to show values
+        - [ ] Calculate discount (percent and value)
+        - [ ] Type of payment
+        - [ ] Confirm sale
+            - [ ] Calculate cashier values (money in)
+            - [ ] Calculate stock values (product out)
+- [ ] Buy Screen
+- [ ] Home Screen
