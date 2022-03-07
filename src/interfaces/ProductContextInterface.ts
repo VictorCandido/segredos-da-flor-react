@@ -7,5 +7,4 @@ export default interface ProductContextInterface {
     getAllProducts: () => Promise<Product[]>;
     saveProduct: (product: Product) => Promise<Product | undefined>;
     deleteProduct: (product: Product) => Promise<void>;
-    handleWithCurrencyValue: (value: string) => number;
 }

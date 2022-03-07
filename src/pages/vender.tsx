@@ -1,23 +1,25 @@
 import type { NextPage } from 'next'
 import { useContext, useEffect, useState } from 'react';
-import { Box, Button, FormControl, FormLabel, Heading, HStack, IconButton, Input, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Table, Tbody, Td, Tfoot, Th, Thead, Tr } from '@chakra-ui/react';
+import { Box, Button, FormControl, FormLabel, Heading, HStack, IconButton, Input, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Table, Tbody, Td, Tfoot, Th, Thead, Tr, useDisclosure } from '@chakra-ui/react';
 import Select from 'react-select'
 import CurrencyInput from 'react-currency-input';
 import { FiTrash2 } from 'react-icons/fi';
 
 import MenuSidebar from '../components/MenuSidebar'
+import FinishSaleModal from '../components/FinishSaleModal';
 
 import { NavigateContext } from '../contexts/NavigateContext';
 import { SellContext } from '../contexts/SellContext';
+import { UtilsContext } from '../contexts/UtilsContext';
 
 import CartItem from '../classes/CartItem';
 import Cart from '../classes/Cart';
 import ProductAsOption from '../classes/ProductAsOption';
 import Product from '../classes/Product';
-import { UtilsContext } from '../contexts/UtilsContext';
-import FinishSaleModal from '../components/FinishSaleModal';
 
 const Vender: NextPage = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   const [ cartItem, setCartItem ] = useState<CartItem>(new CartItem(new Product(), 0, 0));
   const [ cart, setCart ] = useState<Cart>(new Cart([], 0));
   const [ selectedProduct, setSelectedProduct ] = useState<ProductAsOption>(new ProductAsOption(new Product(), '', ''));
@@ -127,7 +129,7 @@ const Vender: NextPage = () => {
 
     const newTotalValue = calcCartTotalValue() - (totalValueOfItemToBeRemoved || 0);
 
-    setCart(new Cart(newCartItems, newTotalValue));
+    setCart(new Cart(newCartItems, Number(newTotalValue.toFixed(2))));
   }
 
   /**
@@ -257,7 +259,7 @@ const Vender: NextPage = () => {
                     <Td isNumeric>{ handleWithShowCurrencyValue(item.totalValue) }</Td>
                     <Td isNumeric d="flex" justifyContent="space-around">
                       <IconButton
-                        aria-label='Editar'
+                        aria-label='Remover'
                         icon={ <FiTrash2 /> }
                         colorScheme="red"
                         variant="ghost"
@@ -291,7 +293,7 @@ const Vender: NextPage = () => {
             colorScheme='green' 
             size="lg"
             isDisabled={ !cart.items.length }
-            onClick={ handleWithAddNewItemToCart }
+            onClick={ onOpen }
           >
             Finalizar Venda
           </Button>
@@ -308,10 +310,14 @@ const Vender: NextPage = () => {
         </HStack>
       </Box>
 
-      <FinishSaleModal 
-        isOpen={ true }
-        onClose={ () => console.log('fechou') }
-      />
+      { isOpen &&
+        <FinishSaleModal 
+        cart={ cart }
+        isOpen={ isOpen }
+        onClose={ onClose }
+        />
+      }
+      
       
     </MenuSidebar>
   )

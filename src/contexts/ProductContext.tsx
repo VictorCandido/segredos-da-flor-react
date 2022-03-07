@@ -20,21 +20,8 @@ export function ProductProvider({ children }: ContextProviderInterface) {
         filterSearchProducts,
         getAllProducts,
         saveProduct,
-        deleteProduct,
-        handleWithCurrencyValue    
+        deleteProduct
     };
-
-    /**
-     * Receives a string number with mask and removes its mask
-     * @param value string value with mask
-     * @returns currency value in number without mask
-     */
-    function handleWithCurrencyValue(value: string): number {
-      value = value.replaceAll('R$', '');
-      value = value.replaceAll('.', '');
-      value = value.replaceAll(',', '.');
-      return Number(value)
-    }
 
     function filterSearchProducts(productsData: Product[]): Product[] {
         if (!productsData) return [];
