@@ -45,7 +45,8 @@ export function UtilsProvider({ children }: ContextProviderInterface) {
         value: valueString, 
         decimalSeparator: ',',
         thousandSeparator: '.',
-        prefix: 'R$'
+        prefix: 'R$',
+        allowNegative: true
       }
   
       return CurrencyInput.prototype.prepareProps(props).maskedValue

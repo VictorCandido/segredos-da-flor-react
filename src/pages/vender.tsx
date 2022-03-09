@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
 import { useContext, useEffect, useState } from 'react';
-import { Box, Button, FormControl, FormLabel, Heading, HStack, IconButton, Input, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Table, Tbody, Td, Tfoot, Th, Thead, Tr, useDisclosure } from '@chakra-ui/react';
+import { Box, Button, FormControl, FormLabel, Heading, HStack, IconButton, Input, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Table, Tbody, Td, Tfoot, Th, Thead, Tr, useDisclosure, useToast } from '@chakra-ui/react';
 import Select from 'react-select'
 import CurrencyInput from 'react-currency-input';
 import { FiTrash2 } from 'react-icons/fi';
@@ -29,6 +29,8 @@ const Vender: NextPage = () => {
   const { getAllProducts } = useContext(SellContext);
   const { handleWithShowCurrencyValue } = useContext(UtilsContext);
 
+  const toast = useToast();
+
   useEffect(() => {
     handleWithListProducts();
   }, []);
@@ -38,11 +40,25 @@ const Vender: NextPage = () => {
   }, [setSelectedPage]);
 
   /**
+   * Show a custom toast message
+   * @param title title of toast
+   * @param status status of toast
+   */
+  function showToast(title: string, status: 'success' | 'error'): void {
+    toast({
+      title,
+      status,
+      position: 'top-right',
+      variant: 'left-accent'
+    });
+  }
+
+  /**
    * Update the Selected cartItem state through CartItem Modal.
    * @param event Changed field`s event
    */
   function handleWithFormUpdate(fieldName: string, fieldValue: ProductAsOption | number): void {
-    const totalValue = (cartItem.product.saleValue || 0) * (cartItem.quantid || 0);
+    const totalValue = Number(((cartItem.product.saleValue || 0) * (cartItem.quantid || 0)).toFixed(2));
     
     const fieldsEvents: any = {
       'product': () => {
@@ -111,7 +127,7 @@ const Vender: NextPage = () => {
     const totalValue = calcCartTotalValue() + newCartItem.totalValue;
 
     // 3 - Add the item to cart
-    const newCart = new Cart([ ...cart.items, newCartItem ], totalValue);
+    const newCart = new Cart([ ...cart.items, newCartItem ], Number(totalValue.toFixed(2)));
     setCart(newCart);
 
     // 4 - Reset the cart item
@@ -148,10 +164,19 @@ const Vender: NextPage = () => {
   /**
    * Clear the cart items list and the total value
    */
-  function handleWithCancelSale(): void {
+  function clearCart(): void {
     setCart(new Cart([], 0));
   }
   
+  function handleWithConfirmSale(hasConfirmed: boolean): void {
+    if (hasConfirmed) {
+      showToast('Venda realizada com sucesso', 'success');
+      clearCart();
+    }
+
+    onClose();
+  }
+
   return (
     <MenuSidebar>
       <Box p={5} shadow='md' borderWidth='1px' bg="white" borderRadius='lg'>
@@ -214,7 +239,6 @@ const Vender: NextPage = () => {
                 readOnly 
                 placeholder='Valor Total' 
                 value={ ((cartItem.product.saleValue || 0) * (cartItem.quantid || 0)) }
-                onChange={ event => console.log(event) }
               />
           </FormControl>
         </HStack>
@@ -225,7 +249,7 @@ const Vender: NextPage = () => {
             w="100%" 
             colorScheme='twitter' 
             size="lg"
-            isDisabled={ !cartItem.product || !cartItem.quantid }
+            isDisabled={ !cartItem.product.id || !cartItem.quantid }
             onClick={ handleWithAddNewItemToCart }
           >
             Adicionar ao Carrinho
@@ -303,7 +327,7 @@ const Vender: NextPage = () => {
             colorScheme='red' 
             size="lg"
             isDisabled={ !cart.items.length }
-            onClick={ handleWithCancelSale }
+            onClick={ clearCart }
           >
             Cancelar Venda
           </Button>
@@ -314,11 +338,9 @@ const Vender: NextPage = () => {
         <FinishSaleModal 
         cart={ cart }
         isOpen={ isOpen }
-        onClose={ onClose }
+        onClose={ (hasConfirmed: boolean) => handleWithConfirmSale(hasConfirmed) }
         />
       }
-      
-      
     </MenuSidebar>
   )
 }

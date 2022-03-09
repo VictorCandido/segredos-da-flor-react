@@ -2,6 +2,6 @@ import Cart from "../classes/Cart";
 
 export default interface FinishSaleModalInterface {
     isOpen: boolean;
-    onClose: () => void;
+    onClose: (hasConfirmed: boolean) => void;
     cart: Cart;
 }
