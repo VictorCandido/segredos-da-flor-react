@@ -22,4 +22,11 @@ export default class Cart {
     set totalValue(totalValue: number) {
         this.#TotalValue = totalValue;
     }
+
+    convertToFirestore() {
+        return {
+            items: this.items.map(item => item.convertToFirestore()),
+            totalValue: this.totalValue
+        };
+    }
 }

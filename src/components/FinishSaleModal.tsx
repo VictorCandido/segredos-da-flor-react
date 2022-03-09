@@ -19,6 +19,7 @@ import FinishSaleModalInterface from "../interfaces/FinishSaleModalInterface";
 import { MdOutlineAttachMoney, MdOutlineMoneyOffCsred } from "react-icons/md";
 import { UtilsContext } from "../contexts/UtilsContext";
 import { SellContext } from "../contexts/SellContext";
+import PurchaseSaleService from "../services/PurchaseSaleService";
 
 
 export default function FinishSaleModal(props: FinishSaleModalInterface) {
@@ -31,7 +32,7 @@ export default function FinishSaleModal(props: FinishSaleModalInterface) {
     const [ sale, setSale ] = useState<Sale>(new Sale());
 
     const { getAllCustomers } = useContext(CustomerContext);
-    const { calculateTotals } = useContext(SellContext);
+    const { calculateTotals, confirmSale } = useContext(SellContext);
     const { handleWithCurrencyValue, handleWithShowCurrencyValue } = useContext(UtilsContext);
 
     useEffect(() => {
@@ -68,7 +69,7 @@ export default function FinishSaleModal(props: FinishSaleModalInterface) {
                 const customerOption = fieldValue as CustomerAsOption;
 
                 setSelectedcustomer(customerOption);
-                setSale(new Sale(cart, saleDate, customerOption.customer, note, paymentMethod, installments, discountValue, discountPercentage, discounts, netTotal, paidTotal, change));
+                setSale(new Sale(cart, saleDate, customerOption?.customer, note, paymentMethod, installments, discountValue, discountPercentage, discounts, netTotal, paidTotal, change));
             },
             'note': () => setSale(new Sale(cart, saleDate, customer, String(fieldValue), paymentMethod, installments, discountValue, discountPercentage, discounts, netTotal, paidTotal, change)),
             'paymentMethod': () => {
@@ -112,6 +113,11 @@ export default function FinishSaleModal(props: FinishSaleModalInterface) {
       });
   
       setCustomerOptions(customerOptions);
+    }
+
+    async function handleWithConfirmSale(): Promise<void> {
+        await confirmSale(sale);
+        props.onClose(true);
     }
 
     /**
@@ -382,7 +388,7 @@ export default function FinishSaleModal(props: FinishSaleModalInterface) {
                     <Button colorScheme='red' ref={ cancelButtonRef } onClick={ confirmModalOnClose }>
                         Cancelar
                     </Button>
-                    <Button colorScheme='green' ml={3} onClick={ () => props.onClose(true) }>
+                    <Button colorScheme='green' ml={3} onClick={ handleWithConfirmSale }>
                         Confirmar Venda
                     </Button>
                 </AlertDialogFooter>

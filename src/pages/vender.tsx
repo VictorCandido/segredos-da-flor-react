@@ -170,8 +170,8 @@ const Vender: NextPage = () => {
   
   function handleWithConfirmSale(hasConfirmed: boolean): void {
     if (hasConfirmed) {
-      showToast('Venda realizada com sucesso', 'success');
       clearCart();
+      showToast('Venda realizada com sucesso', 'success');
     }
 
     onClose();

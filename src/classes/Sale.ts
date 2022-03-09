@@ -113,4 +113,21 @@ export default class Sale {
     set change(change: number) {
         this.#Change = change;
     }
+
+    convertToFirestore() {
+        return {
+            cart: this.cart.convertToFirestore(),
+            saleDate: this.saleDate,
+            customer: this.customer.convertToFirestore(),
+            note: this.note,
+            paymentMethod: this.paymentMethod,
+            installments: this.installments,
+            discountValue: this.discountValue,
+            discountPercentage: this.discountPercentage,
+            discounts: this.discounts,
+            netTotal: this.netTotal,
+            paidTotal: this.paidTotal,
+            change: this.change
+        };
+    }
 }

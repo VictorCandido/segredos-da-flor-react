@@ -56,4 +56,15 @@ export default class Product {
     set isProduct(isProduct: boolean) {
         this.#IsProduct = isProduct;
     }
+
+    convertToFirestore() {
+        return {
+            code: this.code,
+            id: this.id,
+            isProduct: this.isProduct,
+            name: this.name,
+            purchaseValue: this.purchaseValue,
+            saleValue: this.saleValue,
+        };
+    }
 }

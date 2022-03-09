@@ -61,4 +61,15 @@ export default class Customer {
     set note(note: string) {
         this.#Note = note;
     }
+
+    convertToFirestore() {
+        return {
+            address: this.address,
+            id: this.id,
+            mail: this.mail,
+            name: this.name,
+            note: this.note,
+            phone: this.phone
+        };
+    }
 }

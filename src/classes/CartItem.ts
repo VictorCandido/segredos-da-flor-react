@@ -50,4 +50,13 @@ export default class CartItem {
   
       return false;
     }
+
+    convertToFirestore() {
+        return {
+            id: this.id,
+            product: this.product.convertToFirestore(),
+            quantid: this.quantid,
+            totalValue: this.totalValue
+        }
+    }
 }
