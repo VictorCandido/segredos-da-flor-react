@@ -1,4 +1,4 @@
-This is the Segredos da Flor projetc developed with React.js using Vercel's [Next.js](https://nextjs.org/).
+# This is the Segredos da Flor projetc developed with React.js using Vercel's [Next.js](https://nextjs.org/).
 
 ## Getting Started
 
@@ -44,6 +44,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
      - [x] Filter customers
      - [x] Phone mask
      - [ ] Sort list by table header
+     - [ ] Handle with possible errors
 - [ ] Products Screen
      - [x] List products
      - [x] Add new product
@@ -53,20 +54,22 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
      - [x] Currency mask
      - [x] Is product showing mask (Sim, Não)
      - [ ] Sort list by table header
-- [ ] Sell Screen
-    - [x] Create cart item
-    - [x] Create cart items list
-    - [x] Add new item to cart items list
-    - [x] Calculate cart total value
-    - [x] Currency mask
-    - [x] Remove item from cart items list
-    - [x] Verify problem with wrong filter product's field
-    - [ ] Finish sale
-        - [ ] Create modal to show values
-        - [ ] Calculate discount (percent and value)
-        - [ ] Type of payment
-        - [ ] Confirm sale
-            - [ ] Calculate cashier values (money in)
-            - [ ] Calculate stock values (product out)
+     - [ ] Handle with possible errors
+- [ ] Sale Screen
+     - [x] Create cart item
+     - [x] Create cart items list
+     - [x] Add new item to cart items list
+     - [x] Calculate cart total value
+     - [x] Currency mask
+     - [x] Remove item from cart items list
+     - [x] Verify problem with wrong filter product's field
+     - [ ] Finish sale
+          - [x] Create modal to show values
+          - [x] Calculate discount (percent and value)
+          - [x] Type of payment
+          - [ ] Confirm sale
+               - [ ] Calculate cashier values (money in)
+               - [ ] Calculate stock values (product out)
+     - [ ] Handle with possible errors
 - [ ] Buy Screen
 - [ ] Home Screen

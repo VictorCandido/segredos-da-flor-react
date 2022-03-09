@@ -1,27 +1,20 @@
 import { createContext } from "react";
-import Product from "../classes/Product";
 import PurchaseSale, { PurchaseSaleTypeEnum } from "../classes/PurchaseSale";
 import Sale from "../classes/Sale";
 import ContextProviderInterface from "../interfaces/ContextProviderInterface";
-import SellContextInterface from "../interfaces/SellContextInterface";
-import ProductService from "../services/ProductService";
+import SaleContextInterface from "../interfaces/SaleContextInterface";
 import PurchaseSaleService from "../services/PurchaseSaleService";
 
-export const SellContext = createContext({} as SellContextInterface);
+export const SaleContext = createContext({} as SaleContextInterface);
 
-export function SellProvider({ children }: ContextProviderInterface) {
-    const productService = new ProductService();
+export function SaleProvider({ children }: ContextProviderInterface) {
+
+    // const productService = new ProductService();
     const purchaseSaleService = new PurchaseSaleService();
 
     const value = {
-        getAllProducts,
         calculateTotals,
         confirmSale
-    }
-
-    async function getAllProducts(): Promise<Product[]> {
-        const products = await productService.getAll();
-        return products;
     }
 
     async function confirmSale(sale: Sale) {
@@ -52,8 +45,8 @@ export function SellProvider({ children }: ContextProviderInterface) {
     }
     
     return (
-        <SellContext.Provider value={ value }>
+        <SaleContext.Provider value={ value }>
             { children }
-        </SellContext.Provider>
+        </SaleContext.Provider>
     )
 }

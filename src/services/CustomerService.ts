@@ -4,15 +4,7 @@ import firebase from './Config';
 
 export default class CustomerService implements CustomerInterface {
     private converter = {
-        toFirestore(customer: Customer): firebase.firestore.DocumentData {
-            return {
-                name: customer.name,
-                phone: customer.phone,
-                mail: customer.mail,
-                address: customer.address,
-                note: customer.note
-            }
-        },
+        toFirestore: (customer: Customer) => customer.convertToFirestore(),
         fromFirestore(snapshot: firebase.firestore.QueryDocumentSnapshot, options: firebase.firestore.SnapshotOptions): Customer {
             const data = snapshot.data(options)!;
             return new Customer(data.name, data.phone, data.mail, data.address, data.note, snapshot?.id);

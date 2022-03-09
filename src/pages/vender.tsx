@@ -9,13 +9,13 @@ import MenuSidebar from '../components/MenuSidebar'
 import FinishSaleModal from '../components/FinishSaleModal';
 
 import { NavigateContext } from '../contexts/NavigateContext';
-import { SellContext } from '../contexts/SellContext';
 import { UtilsContext } from '../contexts/UtilsContext';
 
 import CartItem from '../classes/CartItem';
 import Cart from '../classes/Cart';
 import ProductAsOption from '../classes/ProductAsOption';
 import Product from '../classes/Product';
+import { ProductContext } from '../contexts/ProductContext';
 
 const Vender: NextPage = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -26,8 +26,8 @@ const Vender: NextPage = () => {
   const [ productOptions, setProductOptions ] = useState<ProductAsOption[]>([]);
   
   const { setSelectedPage } = useContext(NavigateContext);
-  const { getAllProducts } = useContext(SellContext);
-  const { handleWithShowCurrencyValue } = useContext(UtilsContext);
+    const { getAllProducts } = useContext(ProductContext);
+    const { handleWithShowCurrencyValue } = useContext(UtilsContext);
 
   const toast = useToast();
 
@@ -214,7 +214,7 @@ const Vender: NextPage = () => {
         </HStack>
 
         <HStack spacing={6} mt={4}>
-          {/* SELL UNIT VALUE FIELD */}
+          {/* SALE UNIT VALUE FIELD */}
           <FormControl>
               <FormLabel>Valor Unitário</FormLabel>
               <Input 

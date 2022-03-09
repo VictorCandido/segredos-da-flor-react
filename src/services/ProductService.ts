@@ -5,13 +5,7 @@ import firebase from './Config';
 export default class ProductService implements ProductInterface {
     private converter = {
         toFirestore(product: Product): firebase.firestore.DocumentData {
-            return {
-                code: product.code,
-                name: product.name,
-                purchaseValue: product.purchaseValue,
-                saleValue: product.saleValue,
-                isProduct: product.isProduct
-            }
+            return product.convertToFirestore();
         },
         fromFirestore(snapshot: firebase.firestore.QueryDocumentSnapshot, options: firebase.firestore.SnapshotOptions): Product {
             const data = snapshot.data(options)!;

@@ -18,8 +18,7 @@ import { CustomerContext } from "../contexts/CustomerContext";
 import FinishSaleModalInterface from "../interfaces/FinishSaleModalInterface";
 import { MdOutlineAttachMoney, MdOutlineMoneyOffCsred } from "react-icons/md";
 import { UtilsContext } from "../contexts/UtilsContext";
-import { SellContext } from "../contexts/SellContext";
-import PurchaseSaleService from "../services/PurchaseSaleService";
+import { SaleContext } from "../contexts/SaleContext";
 
 
 export default function FinishSaleModal(props: FinishSaleModalInterface) {
@@ -32,7 +31,7 @@ export default function FinishSaleModal(props: FinishSaleModalInterface) {
     const [ sale, setSale ] = useState<Sale>(new Sale());
 
     const { getAllCustomers } = useContext(CustomerContext);
-    const { calculateTotals, confirmSale } = useContext(SellContext);
+    const { calculateTotals, confirmSale } = useContext(SaleContext);
     const { handleWithCurrencyValue, handleWithShowCurrencyValue } = useContext(UtilsContext);
 
     useEffect(() => {
