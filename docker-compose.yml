@@ -1,0 +1,12 @@
+version: '3.1'
+services:
+  db:
+    image: mongo
+    container_name: db
+    restart: always
+    ports:
+      - ${MONGO_DB_PORT}:27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_DB_USER}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_DB_PASSWORD}
+
