@@ -12,11 +12,15 @@ import ISaleModel from '../interfaces/ISale';
 import PurchaseSaleModel from '../models/PurchaseSaleModel';
 
 const _create = async (req: NextApiRequest): Promise<ResponseMessage> => {
+    const cartItemsIdArray = new Array();
+    let newCart: HydratedDocument<ICartModel> | null = null;
+    let newSale: HydratedDocument<ISaleModel> | null = null;
+    let newPurchaseSale: HydratedDocument<IPurchaseSaleModel> | null = null;
+
     try {
         const { currentDate, data: sale, type }: IPurchaseSale = req.body;
         const { items, totalValue } = sale.cart;
 
-        const cartItemsArray = new Array();
 
         for (var i = 0; i < items.length; i++) {
             const item = items[i];
@@ -28,16 +32,16 @@ const _create = async (req: NextApiRequest): Promise<ResponseMessage> => {
                 totalValue: item.totalValue
             });
 
-            cartItemsArray.push(newCartItem._id);
+            cartItemsIdArray.push(newCartItem._id);
         }
 
-        const newCart: HydratedDocument<ICartModel> = await CartModel.create({
-            items: cartItemsArray,
+        newCart = await CartModel.create({
+            items: cartItemsIdArray,
             totalValue
         });
 
-        const newSale: HydratedDocument<ISaleModel> = await SaleModel.create({
-            cart: newCart._id,
+        newSale = await SaleModel.create({
+            cart: newCart?._id,
             saleDate: sale.saleDate,
             customer: sale.customer._id,
             note: sale.note,
@@ -51,14 +55,32 @@ const _create = async (req: NextApiRequest): Promise<ResponseMessage> => {
             change: sale.change
         });
 
-        const newPurchaseSale: HydratedDocument<IPurchaseSaleModel> = await PurchaseSaleModel.create({ 
+        newPurchaseSale = await PurchaseSaleModel.create({ 
             type,
             currentDate,
-            data: newSale._id,
+            data: newSale?._id,
         });
 
         return new ResponseMessage(true, 201, 'Produto criado com sucesso', newPurchaseSale);
     } catch (error: any) {
+        console.log('Falha ao registar venda. Removendo registros cadastrados...');
+
+        for (var i = 0; i < cartItemsIdArray.length; i++) {
+            await CartItemModel.findByIdAndDelete(cartItemsIdArray[i]);
+        }
+
+        if (newCart?._id) {
+            await CartModel.findByIdAndDelete(newCart?._id);
+        }
+
+        if (newSale?._id) {
+            await SaleModel.findByIdAndDelete(newSale?._id);
+        }
+
+        if (newPurchaseSale?._id) {
+            await PurchaseSaleModel.findByIdAndDelete(newPurchaseSale?._id);
+        }
+
         return new ResponseMessage(false, 500, error.message, error);
     }
 }
