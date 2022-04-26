@@ -4,7 +4,7 @@ export default interface ProductContextInterface {
     searchProduct: string;
     setSearchProduct: (searchProduct: string) => void;
     filterSearchProducts: (productsData: Product[]) => Product[];
-    getAllProducts: () => Promise<Product[]>;
+    listAllProducts: () => Promise<Product[]>;
     saveProduct: (product: Product) => Promise<Product | undefined>;
     deleteProduct: (product: Product) => Promise<void>;
 }

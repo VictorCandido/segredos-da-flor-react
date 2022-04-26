@@ -18,7 +18,7 @@ export function ProductProvider({ children }: ContextProviderInterface) {
         searchProduct,
         setSearchProduct,
         filterSearchProducts,
-        getAllProducts,
+        listAllProducts,
         saveProduct,
         deleteProduct
     };
@@ -56,14 +56,14 @@ export function ProductProvider({ children }: ContextProviderInterface) {
         });
     }
 
-    async function getAllProducts(): Promise<Product[]> {
-        const products = await productService.getAll();
-        return sortProducts(products);
+    async function listAllProducts(): Promise<Product[]> {
+        const products = await productService.listAll();
+        return sortProducts(products.map(product => new Product(product.code, product.name, product.purchaseValue, product.saleValue, product.isProduct, product._id)));
     }
 
     async function saveProduct(product: Product): Promise<Product | undefined> {
         const savedProduct = await productService.store(product);
-        return savedProduct;
+        return new Product(savedProduct.code, savedProduct.name, savedProduct.purchaseValue, savedProduct.saleValue, savedProduct.isProduct, savedProduct._id);
     }
 
     async function deleteProduct(product: Product): Promise<void> {

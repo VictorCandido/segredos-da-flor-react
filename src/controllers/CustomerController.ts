@@ -1,10 +1,12 @@
 import type { NextApiRequest } from 'next'
 import ResponseMessage from '../classes/ResponseMessage';
+import ICustomerModel from '../interfaces/ICustomer';
 import CustomerModel from '../models/CustomerModel';
 
-const _create = async (req: NextApiRequest): Promise<ResponseMessage> => {
+const _create = async (req: NextApiRequest): Promise<ResponseMessage<ICustomerModel>> => {
     try {
         const { body } = req;
+
         const newCustomer = await CustomerModel.create(body);
         return new ResponseMessage(true, 201, 'Cliente criado com sucesso', newCustomer);
     } catch (error: any) {
@@ -12,7 +14,7 @@ const _create = async (req: NextApiRequest): Promise<ResponseMessage> => {
     }
 }
 
-const _list = async (req: NextApiRequest): Promise<ResponseMessage> => {
+const _list = async (req: NextApiRequest): Promise<ResponseMessage<ICustomerModel>> => {
     try {
         const { id } = req.query;
         const newCustomer = await CustomerModel.findById(id);
@@ -27,7 +29,7 @@ const _list = async (req: NextApiRequest): Promise<ResponseMessage> => {
     }
 }
 
-const _listAll = async (req: NextApiRequest): Promise<ResponseMessage> => {
+const _listAll = async (req: NextApiRequest): Promise<ResponseMessage<ICustomerModel[]>> => {
     try {
         const customers = await CustomerModel.find();
         return new ResponseMessage(true, 200, 'Clientes listados com sucesso', customers);
@@ -36,7 +38,7 @@ const _listAll = async (req: NextApiRequest): Promise<ResponseMessage> => {
     }
 }
 
-const _update = async (req: NextApiRequest): Promise<ResponseMessage> => {
+const _update = async (req: NextApiRequest): Promise<ResponseMessage<ICustomerModel>> => {
     try {
         const { body } = req;
         const { id } = req.query;
@@ -56,7 +58,7 @@ const _update = async (req: NextApiRequest): Promise<ResponseMessage> => {
     }
 }
 
-const _delete = async (req: NextApiRequest): Promise<ResponseMessage> => {
+const _delete = async (req: NextApiRequest): Promise<ResponseMessage<ICustomerModel>> => {
     try {
         const { id } = req.query;
         const newCustomer = await CustomerModel.findByIdAndDelete(id);

@@ -4,7 +4,7 @@ import CustomerController from '../../../controllers/CustomerController';
 import DbConnection from '../../../services/DbConnection'
 
 export default async function handler (req: NextApiRequest, res: NextApiResponse) {
-    let responseMessage: ResponseMessage = new ResponseMessage(false, 405, 'Method Not Allowed');
+    let responseMessage: ResponseMessage<any> = new ResponseMessage(false, 405, 'Method Not Allowed');
 
     try {
         const { method } = req;

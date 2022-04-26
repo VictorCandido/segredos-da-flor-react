@@ -18,7 +18,7 @@ const Clientes: NextPage = () => {
   const [ customer, setCustomer ] = useState<Customer>(new Customer());
   
   const { setSelectedPage } = useContext(NavigateContext);
-  const { searchCustomer, setSearchCustomer, filterSearchCustomers, saveCustomer, getAllCustomers, deleteCustomer } = useContext(CustomerContext);
+  const { searchCustomer, setSearchCustomer, filterSearchCustomers, saveCustomer, listAllCustomers, deleteCustomer } = useContext(CustomerContext);
 
   const toast = useToast();
   
@@ -77,7 +77,7 @@ const Clientes: NextPage = () => {
    */
   async function handleWithListCustomers(): Promise<void> {
     try {
-      const customersList = await getAllCustomers();
+      const customersList = await listAllCustomers();
       setCustomersData(customersList);
     } catch (error) {
       handleWithError('Falha ao listar clientes. Por favor, tente mais tarde.', error);

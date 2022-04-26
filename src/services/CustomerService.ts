@@ -1,37 +1,67 @@
+import { AxiosResponse } from "axios";
 import Customer from "../classes/Customer";
+import ResponseMessage from "../classes/ResponseMessage";
 import CustomerInterface from "../interfaces/CostumerInterface";
+import ICustomerModel from "../interfaces/ICustomer";
+import Axios from "./Axios";
 import firebase from './Config';
 
 export default class CustomerService implements CustomerInterface {
-    private converter = {
-        toFirestore: (customer: Customer) => customer.convertToFirestore(),
-        fromFirestore(snapshot: firebase.firestore.QueryDocumentSnapshot, options: firebase.firestore.SnapshotOptions): Customer {
-            const data = snapshot.data(options)!;
-            return new Customer(data.name, data.phone, data.mail, data.address, data.note, snapshot?.id);
-        }
-    }
-
-    private collection = firebase.firestore().collection('customers').withConverter(this.converter);
-
     constructor() { }
 
-    async getAll(): Promise<Customer[]> {
-        const query = await this.collection.get();
-        return query.docs.map(doc => doc.data());
-    }
-    
-    async store(customer: Customer): Promise<Customer | undefined> {
-        if (customer?.id) {
-            await this.collection.doc(customer.id).set(customer);
-            return customer;
+    async listAll(): Promise<ICustomerModel[]> {
+        try {
+            const result = await Axios.get<ResponseMessage<ICustomerModel[]>>('/customers');
+            const { success, data, message } = result.data;
+            
+            if (success) {
+                return data;
+            }
+            
+            throw new Error(message);
+        } catch (error) {
+            console.log('[ERROR] - Fail at list all customers - listAll - CustomerService')
+            console.dir(error);
+            throw error;
         }
+    }
 
-        const docRef = await this.collection.add(customer);
-        const doc = await docRef.get();
-        return doc.data();
+    async store(customer: Customer): Promise<ICustomerModel> {
+        try {
+            let result: AxiosResponse<ResponseMessage<ICustomerModel>, any>;
+
+            if (customer?.id) {
+                result = await Axios.put<ResponseMessage<ICustomerModel>>(`/customers/${customer?.id}`, customer.build());
+            } else {
+                result = await Axios.post<ResponseMessage<ICustomerModel>>('/customers', customer.build());
+            }
+
+            const { success, data, message } = result.data;
+
+            if (success) {
+                return data;
+            }
+
+            throw new Error(message);
+        } catch (error) {
+            console.log('[ERROR] - Fail at save customer - store - CustomerService')
+            console.dir(error);
+            throw error;
+        }
     }
     
     async delete(customer: Customer): Promise<void> {
-        await this.collection.doc(customer.id).delete();
+        try {
+            const result = await Axios.delete<ResponseMessage<any>>(`/customers/${customer.id}`);
+            const { success, message } = result.data;
+
+            if (!success) {
+                throw new Error(message);
+            }
+        } catch (error) {
+            console.log('[ERROR] - Fail at delete customer - delete - CustomerService')
+            console.dir(error);
+            throw error;
+        }
     }
 }
