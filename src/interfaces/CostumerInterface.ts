@@ -1,7 +1,8 @@
 import Customer from "../classes/Customer";
+import ICustomerModel from "./ICustomer";
 
 export default interface CustomerInterface {
-    getAll(): Promise<Array<Customer>>
-    store(customer: Customer): Promise<Customer | undefined>;
+    listAll(): Promise<ICustomerModel[]>
+    store(customer: Customer): Promise<ICustomerModel>;
     delete(customer: Customer): Promise<void>
 }

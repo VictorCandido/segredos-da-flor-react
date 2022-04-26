@@ -11,11 +11,11 @@ import ICartModel from '../interfaces/ICart';
 import ISaleModel from '../interfaces/ISale';
 import PurchaseSaleModel from '../models/PurchaseSaleModel';
 
-const _create = async (req: NextApiRequest): Promise<ResponseMessage> => {
+const _create = async (req: NextApiRequest): Promise<ResponseMessage<IPurchaseSaleModel>> => {
     const cartItemsIdArray = new Array();
-    let newCart: HydratedDocument<ICartModel> | null = null;
-    let newSale: HydratedDocument<ISaleModel> | null = null;
-    let newPurchaseSale: HydratedDocument<IPurchaseSaleModel> | null = null;
+    let newCart: ICartModel = {} as ICartModel;
+    let newSale: ISaleModel = {} as ISaleModel;
+    let newPurchaseSale: IPurchaseSaleModel = {} as IPurchaseSaleModel;
 
     try {
         const { currentDate, data: sale, type }: IPurchaseSale = req.body;
@@ -85,9 +85,9 @@ const _create = async (req: NextApiRequest): Promise<ResponseMessage> => {
     }
 }
 
-const _listAll = async (req: NextApiRequest): Promise<ResponseMessage> => {
+const _listAll = async (req: NextApiRequest): Promise<ResponseMessage<IPurchaseSaleModel[]>> => {
     try {
-        const Products = await PurchaseSaleModel.find()
+        const Products: IPurchaseSaleModel[] = await PurchaseSaleModel.find()
             .populate({
                 path: 'data',
                 populate: [{

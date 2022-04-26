@@ -26,7 +26,7 @@ const Vender: NextPage = () => {
   const [ productOptions, setProductOptions ] = useState<ProductAsOption[]>([]);
   
   const { setSelectedPage } = useContext(NavigateContext);
-    const { getAllProducts } = useContext(ProductContext);
+    const { listAllProducts } = useContext(ProductContext);
     const { handleWithShowCurrencyValue } = useContext(UtilsContext);
 
   const toast = useToast();
@@ -76,7 +76,7 @@ const Vender: NextPage = () => {
    * Get all products from database and fill the product select in the form
    */
   async function handleWithListProducts(): Promise<void> {
-    const products = await getAllProducts();
+    const products = await listAllProducts();
     const productOptions = products.map(product => {
       return new ProductAsOption(product, product.id, product.name);
     });

@@ -1,14 +1,14 @@
-export default class ResponseMessage {
+export default class ResponseMessage<T> {
     #Success: boolean;
     #Code: number;
     #Message: string;
-    #Data?: any;
+    #Data: T;
 
-    constructor(success: boolean, code: number,  message: string, data?: any) {
+    constructor(success: boolean, code: number,  message: string, data?: T) {
         this.#Success = success;
         this.#Code = code;
         this.#Message = message;
-        this.#Data = data;
+        this.#Data = data || {} as T;
     }
 
     get success(): boolean {
@@ -35,11 +35,11 @@ export default class ResponseMessage {
         this.#Message = message;
     }
 
-    get data(): any {
+    get data(): T {
         return this.#Data;
     }
 
-    set data(data: any) {
+    set data(data: T) {
         this.#Data = data;
     }
 

@@ -30,7 +30,7 @@ export default function FinishSaleModal(props: FinishSaleModalInterface) {
     const [ selectedcustomer, setSelectedcustomer ] = useState<CustomerAsOption>(new CustomerAsOption(new Customer(), '', ''));
     const [ sale, setSale ] = useState<Sale>(new Sale());
 
-    const { getAllCustomers } = useContext(CustomerContext);
+    const { listAllCustomers } = useContext(CustomerContext);
     const { calculateTotals, confirmSale } = useContext(SaleContext);
     const { handleWithCurrencyValue, handleWithShowCurrencyValue } = useContext(UtilsContext);
 
@@ -106,7 +106,7 @@ export default function FinishSaleModal(props: FinishSaleModalInterface) {
      * Get all customers from database and fill the customer select in the form
      */
     async function handleWithListCustomer(): Promise<void> {
-      const customers = await getAllCustomers();
+      const customers = await listAllCustomers();
       const customerOptions = customers.map(customer => {
         return new CustomerAsOption(customer, customer.id, customer.name);
       });

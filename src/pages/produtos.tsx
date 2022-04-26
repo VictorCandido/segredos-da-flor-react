@@ -18,7 +18,7 @@ const Produtos: NextPage = () => {
   const [ product, setProduct ] = useState<Product>(new Product());
   
   const { setSelectedPage } = useContext(NavigateContext);
-  const { searchProduct, setSearchProduct, filterSearchProducts, saveProduct, getAllProducts, deleteProduct } = useContext(ProductContext);
+  const { searchProduct, setSearchProduct, filterSearchProducts, saveProduct, listAllProducts, deleteProduct } = useContext(ProductContext);
   const { handleWithCurrencyValue, handleWithShowCurrencyValue } = useContext(UtilsContext);
 
   const toast = useToast();
@@ -85,7 +85,7 @@ const Produtos: NextPage = () => {
    */
   async function handleWithListProducts(): Promise<void> {
     try {
-      const productsList = await getAllProducts();
+      const productsList = await listAllProducts();
       setProductsData(productsList);
     } catch (error) {
       handleWithError('Falha ao listar produtos. Por favor, tente mais tarde.', error);

@@ -1,8 +1,9 @@
 import type { NextApiRequest } from 'next'
 import ResponseMessage from '../classes/ResponseMessage';
+import IProductModel from '../interfaces/IProduct';
 import ProductModel from '../models/ProductModel';
 
-const _create = async (req: NextApiRequest): Promise<ResponseMessage> => {
+const _create = async (req: NextApiRequest): Promise<ResponseMessage<IProductModel>> => {
     try {
         const { body } = req;
     
@@ -13,7 +14,7 @@ const _create = async (req: NextApiRequest): Promise<ResponseMessage> => {
     }
 }
 
-const _list = async (req: NextApiRequest): Promise<ResponseMessage> => {
+const _list = async (req: NextApiRequest): Promise<ResponseMessage<IProductModel>> => {
     try {
         const { id } = req.query;
         const newProduct = await ProductModel.findById(id);
@@ -28,7 +29,7 @@ const _list = async (req: NextApiRequest): Promise<ResponseMessage> => {
     }
 }
 
-const _listAll = async (req: NextApiRequest): Promise<ResponseMessage> => {
+const _listAll = async (req: NextApiRequest): Promise<ResponseMessage<IProductModel[]>> => {
     try {
         const Products = await ProductModel.find();
         return new ResponseMessage(true, 200, 'Produtos listados com sucesso', Products);
@@ -37,7 +38,7 @@ const _listAll = async (req: NextApiRequest): Promise<ResponseMessage> => {
     }
 }
 
-const _update = async (req: NextApiRequest): Promise<ResponseMessage> => {
+const _update = async (req: NextApiRequest): Promise<ResponseMessage<IProductModel>> => {
     try {
         const { body } = req;
         const { id } = req.query;
@@ -57,7 +58,7 @@ const _update = async (req: NextApiRequest): Promise<ResponseMessage> => {
     }
 }
 
-const _delete = async (req: NextApiRequest): Promise<ResponseMessage> => {
+const _delete = async (req: NextApiRequest): Promise<ResponseMessage<IProductModel>> => {
     try {
         const { id } = req.query;
         const newProduct = await ProductModel.findByIdAndDelete(id);

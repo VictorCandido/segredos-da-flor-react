@@ -1,7 +1,8 @@
 import Product from "../classes/Product";
+import IProductModel from "./IProduct";
 
 export default interface ProductInterface {
-    getAll(): Promise<Array<Product>>
-    store(product: Product): Promise<Product | undefined>;
+    listAll(): Promise<Array<IProductModel>>
+    store(product: Product): Promise<IProductModel>;
     delete(product: Product): Promise<void>
 }
