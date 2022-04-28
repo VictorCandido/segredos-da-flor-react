@@ -43,6 +43,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
      - [x] Delete customer
      - [x] Filter customers
      - [x] Phone mask
+     - [ ] Limit characters on table
      - [ ] Sort list by table header
      - [ ] Handle with possible errors
 - [ ] Products Screen
@@ -53,6 +54,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
      - [x] Filter products
      - [x] Currency mask
      - [x] Is product showing mask (Sim, Não)
+     - [ ] Limit characters on table
      - [ ] Sort list by table header
      - [ ] Handle with possible errors
 - [ ] Sale Screen
@@ -68,8 +70,11 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
           - [x] Calculate discount (percent and value)
           - [x] Type of payment
           - [ ] Confirm sale
+               - [X] Save sale record on database
                - [ ] Calculate cashier values (money in)
                - [ ] Calculate stock values (product out)
      - [ ] Handle with possible errors
 - [ ] Buy Screen
+- [ ] Reports
+- [ ] Product Stock
 - [ ] Home Screen
