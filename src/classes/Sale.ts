@@ -114,11 +114,11 @@ export default class Sale {
         this.#Change = change;
     }
 
-    convertToFirestore() {
+    build() {
         return {
-            cart: this.cart.convertToFirestore(),
+            cart: this.cart.build(),
             saleDate: this.saleDate,
-            customer: this.customer.convertToFirestore(),
+            customer: this.customer.build(),
             note: this.note,
             paymentMethod: this.paymentMethod,
             installments: this.installments,

@@ -1,6 +1,5 @@
+import { PurchaseSaleTypeEnum } from "../interfaces/IPurchaseSale";
 import Sale from "./Sale";
-
-export enum PurchaseSaleTypeEnum { PURCHASE, SALE };
 
 export default class PurchaseSale {
     #Id: string;
@@ -43,11 +42,11 @@ export default class PurchaseSale {
         this.#Data = data;
     }
 
-    convertToFirestore() {
+    build() {
         return {
             type: this.type,
             currentDate: this.currentDate,
-            data: this.data.convertToFirestore()
+            data: this.data.build()
         }
     }
 }

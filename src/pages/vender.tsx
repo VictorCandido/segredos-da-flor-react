@@ -95,7 +95,7 @@ const Vender: NextPage = () => {
     console.log('items.length', items.length)
 
     if (items.length > 0) {
-      return items[items.length - 1].id;
+      return items[items.length - 1].cartItemId;
     }
 
     return 0;
@@ -140,8 +140,8 @@ const Vender: NextPage = () => {
    * @param cartItem cart item to be removed
    */
   function handleWithRemoveItemFromCart(cartItem: CartItem): void {
-    const totalValueOfItemToBeRemoved = cart.items.find(item => item.id === cartItem.id)?.totalValue;
-    const newCartItems = cart.items.filter(item => item.id !== cartItem.id);
+    const totalValueOfItemToBeRemoved = cart.items.find(item => item.cartItemId === cartItem.cartItemId)?.totalValue;
+    const newCartItems = cart.items.filter(item => item.cartItemId !== cartItem.cartItemId);
 
     const newTotalValue = calcCartTotalValue() - (totalValueOfItemToBeRemoved || 0);
 
@@ -275,7 +275,7 @@ const Vender: NextPage = () => {
             <Tbody>
               { cart.items.map(item => {
                 return (
-                  <Tr key={ item.id }>
+                  <Tr key={ item.cartItemId }>
                     <Td>{ item.product.code }</Td>
                     <Td>{ item.product.name }</Td>
                     <Td isNumeric>{ item.quantid }</Td>

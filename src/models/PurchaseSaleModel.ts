@@ -1,6 +1,5 @@
-import { PurchaseSaleTypeEnum } from './../classes/PurchaseSale';
 import mongoose from "mongoose";
-import IPurchaseSaleModel from '../interfaces/IPurchaseSale';
+import IPurchaseSaleModel, { PurchaseSaleTypeEnum } from '../interfaces/IPurchaseSale';
 
 
 const PurchaseSaleSchema = new mongoose.Schema<IPurchaseSaleModel>({ 

@@ -23,9 +23,9 @@ export default class Cart {
         this.#TotalValue = totalValue;
     }
 
-    convertToFirestore() {
+    build() {
         return {
-            items: this.items.map(item => item.convertToFirestore()),
+            items: this.items.map(item => item.build()),
             totalValue: this.totalValue
         };
     }

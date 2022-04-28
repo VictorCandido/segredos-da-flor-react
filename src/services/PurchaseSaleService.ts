@@ -1,30 +1,27 @@
 import PurchaseSale from "../classes/PurchaseSale";
+import ResponseMessage from "../classes/ResponseMessage";
+import { IPurchaseSale } from "../interfaces/IPurchaseSale";
 import PurchaseSaleInterface from "../interfaces/PurchaseSaleInterface";
-import firebase from './Config';
+import Axios from "./Axios";
 
 export default class PurchaseSaleService implements PurchaseSaleInterface {
-    private converter = {
-        toFirestore(purchaseSale: PurchaseSale): firebase.firestore.DocumentData {
-            return purchaseSale.convertToFirestore();
-        },
-        fromFirestore(snapshot: firebase.firestore.QueryDocumentSnapshot, options: firebase.firestore.SnapshotOptions): PurchaseSale {
-            const data = snapshot.data(options)!;
-            return new PurchaseSale(data.type, data.data, data.currentDate, snapshot?.id);
-        }
-    }
-
-    private collection = firebase.firestore().collection('purchaseSale').withConverter(this.converter);
-
     constructor() {
     }
     
-    async registerSale(purchaseSale: PurchaseSale): Promise<PurchaseSale | undefined> {
+    async registerSaleOnDatabase(purchaseSale: PurchaseSale): Promise<IPurchaseSale> {
         try {
-            await this.collection.add(purchaseSale);
-            return purchaseSale;
+            const result = await Axios.post<ResponseMessage<IPurchaseSale>>('/purchase-sale', purchaseSale.build());
+
+            const { success, data, message } = result.data;
+
+            if (success) {
+                return data;
+            }
+
+            throw new Error(message);
         } catch (error) {
-            console.log('[Error] Fail at saving register of purchase/sale to firestore');
-            console.error(error);
+            console.log('[ERROR] - Fail at register sale - registerSaleOnDatabase - PurchaseSaleService')
+            console.dir(error);
             throw error;
         }
     }

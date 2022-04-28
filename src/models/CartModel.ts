@@ -4,7 +4,8 @@ import ICartModel from "../interfaces/ICart";
 const CartSchema = new mongoose.Schema<ICartModel>({
     items: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'CartItem'
+        ref: 'CartItem',
+        required: true
     }],
     totalValue: { type: Number, required: true },
 });

@@ -4,21 +4,8 @@ import ResponseMessage from "../classes/ResponseMessage";
 import IProductModel from "../interfaces/IProduct";
 import ProductInterface from "../interfaces/ProductInterface";
 import Axios from "./Axios";
-import firebase from './Config';
 
 export default class ProductService implements ProductInterface {
-    private converter = {
-        toFirestore(product: Product): firebase.firestore.DocumentData {
-            return product.convertToFirestore();
-        },
-        fromFirestore(snapshot: firebase.firestore.QueryDocumentSnapshot, options: firebase.firestore.SnapshotOptions): Product {
-            const data = snapshot.data(options)!;
-            return new Product(data.code, data.name, data.purchaseValue, data.saleValue, data.isProduct, snapshot?.id);
-        }
-    }
-
-    private collection = firebase.firestore().collection('products').withConverter(this.converter);
-
     constructor() {  }
 
     async listAll(): Promise<IProductModel[]> {

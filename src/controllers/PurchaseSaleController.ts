@@ -61,7 +61,7 @@ const _create = async (req: NextApiRequest): Promise<ResponseMessage<IPurchaseSa
             data: newSale?._id,
         });
 
-        return new ResponseMessage(true, 201, 'Produto criado com sucesso', newPurchaseSale);
+        return new ResponseMessage(true, 201, 'Venda registrada com sucesso', newPurchaseSale);
     } catch (error: any) {
         console.log('Falha ao registar venda. Removendo registros cadastrados...');
 
@@ -103,7 +103,7 @@ const _listAll = async (req: NextApiRequest): Promise<ResponseMessage<IPurchaseS
                 }],
             })
 
-        return new ResponseMessage(true, 200, 'Produtos listados com sucesso', Products);
+        return new ResponseMessage(true, 200, 'Vendas listados com sucesso', Products);
     } catch (error: any) {
         return new ResponseMessage(false, 500, error.message, error);
     }
