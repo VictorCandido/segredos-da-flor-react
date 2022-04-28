@@ -1,7 +1,8 @@
 import { createContext } from "react";
-import PurchaseSale, { PurchaseSaleTypeEnum } from "../classes/PurchaseSale";
+import PurchaseSale from "../classes/PurchaseSale";
 import Sale from "../classes/Sale";
 import ContextProviderInterface from "../interfaces/ContextProviderInterface";
+import { PurchaseSaleTypeEnum } from "../interfaces/IPurchaseSale";
 import SaleContextInterface from "../interfaces/SaleContextInterface";
 import PurchaseSaleService from "../services/PurchaseSaleService";
 
@@ -9,7 +10,6 @@ export const SaleContext = createContext({} as SaleContextInterface);
 
 export function SaleProvider({ children }: ContextProviderInterface) {
 
-    // const productService = new ProductService();
     const purchaseSaleService = new PurchaseSaleService();
 
     const value = {
@@ -18,9 +18,15 @@ export function SaleProvider({ children }: ContextProviderInterface) {
     }
 
     async function confirmSale(sale: Sale) {
-        const type = PurchaseSaleTypeEnum.SALE;
-        const purchaseSale = new PurchaseSale(type, sale);
-        await purchaseSaleService.registerSale(purchaseSale);
+        try {
+            const type = PurchaseSaleTypeEnum.SALE;
+            const purchaseSale = new PurchaseSale(type, sale);
+            await purchaseSaleService.registerSaleOnDatabase(purchaseSale);
+        } catch (error) {
+            console.log('[ERROR] - Fail at confirm sale - confirmSale - SaleContext')
+            console.dir(error);
+            throw error;
+        }
     }
 
     function calculateTotals(sale: Sale): Sale {

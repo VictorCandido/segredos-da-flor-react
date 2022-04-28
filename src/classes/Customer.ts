@@ -62,22 +62,14 @@ export default class Customer {
         this.#Note = note;
     }
 
-    // SHOULD BE REMOVED
-    convertToFirestore() {
-        return {
-            address: this.address,
-            id: this.id,
-            mail: this.mail,
-            name: this.name,
-            note: this.note,
-            phone: this.phone
-        };
-    }
-
     build() {
+        if (!this.#Id) {
+            return {};
+        }
+
         return {
             address: this.address,
-            id: this.id,
+            _id: this.id,
             mail: this.mail,
             name: this.name,
             note: this.note,

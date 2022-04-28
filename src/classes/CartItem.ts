@@ -1,23 +1,23 @@
 import Product from "./Product";
 
 export default class CartItem {
-    #Id: number;
+    #CartItemId: number;
     #Product: Product;
     #Quantid: number;
     #TotalValue: number;
 
-    constructor(product: Product, quantid: number, totalValue: number, id?: number) {
-        this.#Id = id || 0;
+    constructor(product: Product, quantid: number, totalValue: number, cartItemId?: number) {
+        this.#CartItemId = cartItemId || 0;
         this.#Product = product;
         this.#Quantid = quantid;
         this.#TotalValue = totalValue;
     }
 
-    get id(): number {
-        return this.#Id;
+    get cartItemId(): number {
+        return this.#CartItemId;
     }
-    set id(id: number) {
-        this.#Id = id;
+    set cartItemId(cartItemId: number) {
+        this.#CartItemId = cartItemId;
     }
 
     get product(): Product {
@@ -51,10 +51,10 @@ export default class CartItem {
       return false;
     }
 
-    convertToFirestore() {
+    build() {
         return {
-            id: this.id,
-            product: this.product.convertToFirestore(),
+            cartItemId: this.cartItemId,
+            product: this.product.build(),
             quantid: this.quantid,
             totalValue: this.totalValue
         }

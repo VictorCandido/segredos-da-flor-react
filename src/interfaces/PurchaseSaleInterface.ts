@@ -1,5 +1,6 @@
 import PurchaseSale from "../classes/PurchaseSale";
+import { IPurchaseSale } from "./IPurchaseSale";
 
 export default interface PurchaseSaleInterface {
-    registerSale(purchaseSale: PurchaseSale): Promise<PurchaseSale | undefined>;
+    registerSaleOnDatabase(purchaseSale: PurchaseSale): Promise<IPurchaseSale>;
 }

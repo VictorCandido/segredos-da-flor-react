@@ -1,7 +1,10 @@
 import { Document } from 'mongoose';
 import ISale from "./ISale";
 
-export enum PurchaseSaleTypeEnum { PURCHASE = 'purchase', SALE = 'sale' };
+export enum PurchaseSaleTypeEnum { 
+    PURCHASE = 'purchase', 
+    SALE = 'sale' 
+};
 
 export interface IPurchaseSale {
     type: PurchaseSaleTypeEnum;

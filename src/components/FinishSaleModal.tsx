@@ -1,4 +1,4 @@
-import { AlertDialog, AlertDialogBody, AlertDialogCloseButton, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Box, Button, Flex, FormControl, FormLabel, Heading, HStack, Input, InputGroup, InputLeftElement, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Text, Textarea, useDisclosure, VStack } from "@chakra-ui/react";
+import { AlertDialog, AlertDialogBody, AlertDialogCloseButton, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Box, Button, Flex, FormControl, FormLabel, Heading, HStack, Input, InputGroup, InputLeftElement, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Text, Textarea, useDisclosure, useToast, VStack } from "@chakra-ui/react";
 import { Select as ChakraSelect  } from '@chakra-ui/react';
 import { useContext, useEffect, useRef, useState } from "react";
 import { FiCalendar } from "react-icons/fi";
@@ -34,10 +34,37 @@ export default function FinishSaleModal(props: FinishSaleModalInterface) {
     const { calculateTotals, confirmSale } = useContext(SaleContext);
     const { handleWithCurrencyValue, handleWithShowCurrencyValue } = useContext(UtilsContext);
 
+    const toast = useToast();
+
     useEffect(() => {
         handleWithListCustomer();
         setSale(new Sale(props.cart));
     }, []);
+
+    /**
+     * Show a custom toast message
+     * @param title title of toast
+     * @param status status of toast
+     */
+    function showToast(title: string, status: 'success' | 'error'): void {
+      toast({
+        title,
+        status,
+        position: 'top-right',
+        variant: 'left-accent'
+      });
+    }
+  
+    /**
+     * Shows an error to the user and log it on the console
+     * @param message Error message showed to the user and logged on the console
+     * @param error Error logged on the console
+     */
+    function handleWithError(message: string, error: any): void {
+      console.log(message);
+      console.error(error);
+      showToast(message, 'error');
+    }
 
     /**
      * Update the Selected cartItem state through CartItem Modal.
@@ -115,8 +142,13 @@ export default function FinishSaleModal(props: FinishSaleModalInterface) {
     }
 
     async function handleWithConfirmSale(): Promise<void> {
-        await confirmSale(sale);
-        props.onClose(true);
+        try {
+            await confirmSale(sale);
+            showToast('Venda confirmada com sucesso.', 'success');
+            props.onClose(true);
+        } catch (error) {
+            handleWithError('Falha ao confirmar venda. Por favor, tente mais tarde.', error);
+        }
     }
 
     /**

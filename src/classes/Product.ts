@@ -57,21 +57,10 @@ export default class Product {
         this.#IsProduct = isProduct;
     }
 
-    convertToFirestore() {
-        return {
-            code: this.code,
-            id: this.id,
-            isProduct: this.isProduct,
-            name: this.name,
-            purchaseValue: this.purchaseValue,
-            saleValue: this.saleValue,
-        };
-    }
-
     build() {
         return {
             code: this.code,
-            id: this.id,
+            _id: this.id,
             isProduct: this.isProduct,
             name: this.name,
             purchaseValue: this.purchaseValue,

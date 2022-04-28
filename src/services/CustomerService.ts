@@ -4,7 +4,6 @@ import ResponseMessage from "../classes/ResponseMessage";
 import CustomerInterface from "../interfaces/CostumerInterface";
 import ICustomerModel from "../interfaces/ICustomer";
 import Axios from "./Axios";
-import firebase from './Config';
 
 export default class CustomerService implements CustomerInterface {
     constructor() { }
