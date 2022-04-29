@@ -18,10 +18,10 @@ export default class ProductService implements ProductInterface {
             }
             
             throw new Error(message);
-        } catch (error) {
+        } catch (error: any) {
             console.log('[ERROR] - Fail at list all products - listAll - ProductService')
             console.dir(error);
-            throw error;
+            throw error?.response?.data || error;
         }
     }
 
@@ -42,10 +42,10 @@ export default class ProductService implements ProductInterface {
             }
 
             throw new Error(message);
-        } catch (error) {
+        } catch (error: any) {
             console.log('[ERROR] - Fail at save product - store - ProductService')
             console.dir(error);
-            throw error;
+            throw error?.response?.data || error;
         }
     }
 
@@ -57,10 +57,10 @@ export default class ProductService implements ProductInterface {
             if (!success) {
                 throw new Error(message);
             }
-        } catch (error) {
+        } catch (error: any) {
             console.log('[ERROR] - Fail at delete product - delete - ProductService')
             console.dir(error);
-            throw error;
+            throw error?.response?.data || error;
         }
     }
 

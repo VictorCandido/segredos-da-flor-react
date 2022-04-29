@@ -57,17 +57,35 @@ export function ProductProvider({ children }: ContextProviderInterface) {
     }
 
     async function listAllProducts(): Promise<Product[]> {
-        const products = await productService.listAll();
-        return sortProducts(products.map(product => new Product(product.code, product.name, product.purchaseValue, product.saleValue, product.isProduct, product._id)));
+        try {
+            const products = await productService.listAll();
+            return sortProducts(products.map(product => new Product(product.code, product.name, product.purchaseValue, product.saleValue, product.isProduct, product._id)));
+        } catch (error) {
+            console.log('[ERROR] - Fail at list all products - listAllProducts - ProductContext');
+            console.dir(error);
+            throw error;
+        }
     }
 
-    async function saveProduct(product: Product): Promise<Product | undefined> {
-        const savedProduct = await productService.store(product);
-        return new Product(savedProduct.code, savedProduct.name, savedProduct.purchaseValue, savedProduct.saleValue, savedProduct.isProduct, savedProduct._id);
+    async function saveProduct(product: Product): Promise<Product> {
+        try {
+            const savedProduct = await productService.store(product);
+            return new Product(savedProduct.code, savedProduct.name, savedProduct.purchaseValue, savedProduct.saleValue, savedProduct.isProduct, savedProduct._id);
+        } catch (error) {
+            console.log('[ERROR] - Fail at save product - saveProduct - ProductContext');
+            console.dir(error);
+            throw error;
+        }
     }
 
     async function deleteProduct(product: Product): Promise<void> {
-        await productService.delete(product);
+        try {
+            await productService.delete(product);
+        } catch (error) {
+            console.log('[ERROR] - Fail at delete product - deleteProduct - ProductContext');
+            console.dir(error);
+            throw error;
+        }
     }
 
     return (

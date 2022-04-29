@@ -63,17 +63,22 @@ export default class Customer {
     }
 
     build() {
-        if (!this.#Id) {
+        if (!this.name) {
             return {};
         }
 
-        return {
+        const objReturn: any = {
             address: this.address,
-            _id: this.id,
             mail: this.mail,
             name: this.name,
             note: this.note,
             phone: this.phone
         };
+
+        if (this.id) {
+            objReturn['_id'] = this.id;
+        }
+
+        return objReturn;
     }
 }

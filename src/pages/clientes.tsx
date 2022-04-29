@@ -73,6 +73,19 @@ const Clientes: NextPage = () => {
   }
 
   /**
+   * Checks if all the mandatory field are filled in
+   * @returns if the form is valid or not
+   */
+  function validateForm(): boolean {
+    if (!customer.name) {
+      handleWithError('Por favor, preencha o nome do cliente!', 'Customer name cannot be empty.');
+      return false;
+    }
+
+    return true;
+  }
+
+  /**
    * List all customers in Customers Table
    */
   async function handleWithListCustomers(): Promise<void> {
@@ -115,10 +128,12 @@ const Clientes: NextPage = () => {
    */
   async function handleWithSaveCustomer(): Promise<void> {
     try {
-      await saveCustomer(customer);
-      await handleWithListCustomers();
-      customerModalCloseModal();
-      showToast('Cliente salvo com sucesso.', 'success');
+      if (validateForm()) {
+        await saveCustomer(customer);
+        await handleWithListCustomers();
+        customerModalCloseModal();
+        showToast('Cliente salvo com sucesso.', 'success');
+      }
     } catch (error) {
       handleWithError('Falha ao salvar cliente. Por favor, tente mais tarde.', error);
     }

@@ -18,10 +18,10 @@ export default class CustomerService implements CustomerInterface {
             }
             
             throw new Error(message);
-        } catch (error) {
+        } catch (error: any) {
             console.log('[ERROR] - Fail at list all customers - listAll - CustomerService')
             console.dir(error);
-            throw error;
+            throw error?.response?.data || error;
         }
     }
 
@@ -42,10 +42,10 @@ export default class CustomerService implements CustomerInterface {
             }
 
             throw new Error(message);
-        } catch (error) {
+        } catch (error: any) {
             console.log('[ERROR] - Fail at save customer - store - CustomerService')
             console.dir(error);
-            throw error;
+            throw error?.response?.data || error;
         }
     }
     
@@ -57,10 +57,10 @@ export default class CustomerService implements CustomerInterface {
             if (!success) {
                 throw new Error(message);
             }
-        } catch (error) {
+        } catch (error: any) {
             console.log('[ERROR] - Fail at delete customer - delete - CustomerService')
             console.dir(error);
-            throw error;
+            throw error?.response?.data || error;
         }
     }
 }

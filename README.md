@@ -45,7 +45,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
      - [x] Phone mask
      - [ ] Limit characters on table
      - [ ] Sort list by table header
-     - [ ] Handle with possible errors
+     - [X] Handle with possible errors
 - [ ] Products Screen
      - [x] List products
      - [x] Add new product
@@ -56,7 +56,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
      - [x] Is product showing mask (Sim, Não)
      - [ ] Limit characters on table
      - [ ] Sort list by table header
-     - [ ] Handle with possible errors
+     - [X] Handle with possible errors
 - [ ] Sale Screen
      - [x] Create cart item
      - [x] Create cart items list

@@ -57,6 +57,34 @@ const Produtos: NextPage = () => {
   }
 
   /**
+   * Checks if all the mandatory field are filled in
+   * @returns if the form is valid or not
+   */
+  function validateForm(): boolean {
+    if (!product.code) {
+      handleWithError('Por favor, preencha o código do produto!', 'Product code cannot be empty.');
+      return false;
+    }
+
+    if (!product.name) {
+      handleWithError('Por favor, preencha o nome do produto!', 'Product name cannot be empty.');
+      return false;
+    }
+
+    if (!product.purchaseValue) {
+      handleWithError('Por favor, preencha o valor de compra do produto!', 'Product purchase value cannot be empty.');
+      return false;
+    }
+
+    if (!product.saleValue) {
+      handleWithError('Por favor, preencha o valor de venda do produto!', 'Product sale value cannot be empty.');
+      return false;
+    }
+
+    return true;
+  }
+
+  /**
    * Update the Selected Product state through Product Modal.
    * @param event Changed field`s event
    */
@@ -123,10 +151,12 @@ const Produtos: NextPage = () => {
    */
   async function handleWithSaveProduct(): Promise<void> {
     try {
-      await saveProduct(product);
-      await handleWithListProducts();
-      productModalCloseModal();
-      showToast('Produto salvo com sucesso.', 'success');
+      if (validateForm()) {
+        await saveProduct(product);
+        await handleWithListProducts();
+        productModalCloseModal();
+        showToast('Produto salvo com sucesso.', 'success');
+      }
     } catch (error) {
       handleWithError('Falha ao salvar produto. Por favor, tente mais tarde.', error);
     }

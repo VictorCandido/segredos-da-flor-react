@@ -52,6 +52,8 @@ export function CustomerProvider({ children }: ContextProviderInterface) {
             const customers = await customerService.listAll();
             return sortCustomers(customers.map(customer => new Customer(customer.name, customer.phone, customer.mail, customer.address, customer.note, customer._id)));
         } catch (error) {
+            console.log('[ERROR] - Fail at list all customers - listAllCustomers - CustomerContext');
+            console.dir(error);
             throw error;
         }
     }
@@ -61,6 +63,8 @@ export function CustomerProvider({ children }: ContextProviderInterface) {
             const savedCustomer = await customerService.store(customer);
             return new Customer(savedCustomer.name, savedCustomer.phone, savedCustomer.mail, savedCustomer.address, savedCustomer.note, savedCustomer._id);
         } catch (error) {
+            console.log('[ERROR] - Fail at save customer - saveCustomer - CustomerContext');
+            console.dir(error);
             throw error;
         }
     }
@@ -69,6 +73,8 @@ export function CustomerProvider({ children }: ContextProviderInterface) {
         try {
             await customerService.delete(customer);
         } catch (error) {
+            console.log('[ERROR] - Fail at delete customer - deleteCustomer - CustomerContext');
+            console.dir(error);
             throw error;
         }
     }

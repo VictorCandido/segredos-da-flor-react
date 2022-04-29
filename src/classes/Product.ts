@@ -58,13 +58,18 @@ export default class Product {
     }
 
     build() {
-        return {
+        const objReturn: any = {
             code: this.code,
-            _id: this.id,
             isProduct: this.isProduct,
             name: this.name,
             purchaseValue: this.purchaseValue,
             saleValue: this.saleValue,
         };
+
+        if (this.id) {
+            objReturn['_id'] = this.id;
+        }
+
+        return objReturn;
     }
 }

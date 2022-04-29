@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import PurchaseSale from "../classes/PurchaseSale";
 import ResponseMessage from "../classes/ResponseMessage";
 import { IPurchaseSale } from "../interfaces/IPurchaseSale";
@@ -19,10 +20,10 @@ export default class PurchaseSaleService implements PurchaseSaleInterface {
             }
 
             throw new Error(message);
-        } catch (error) {
+        } catch (error: any) {
             console.log('[ERROR] - Fail at register sale - registerSaleOnDatabase - PurchaseSaleService')
             console.dir(error);
-            throw error;
+            throw error?.response?.data || error;
         }
     }
 }
